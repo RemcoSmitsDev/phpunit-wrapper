@@ -5,7 +5,7 @@
   "minimum-stability": "stable",
   "scripts": {
     "post-install-cmd": [
-      "@php bin/phpUnitWrapper.php setup"
+      "@php bin/phpUnitWrapper setup"
     ]
   },
   "require": {
