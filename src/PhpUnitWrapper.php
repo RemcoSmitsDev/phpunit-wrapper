@@ -46,6 +46,13 @@ final class PhpUnitWrapper
      */
     private static function getPhpUnitRelativePath(): string
     {
+        $dir = dirname(__DIR__);
+
+        // check if vendor dir exists
+        if (!file_exists($dir . '/vendor/bin/phpunit')) {
+            shell_exec('cd ' . $dir . ' && composer install');
+        }
+
         return realpath(__DIR__ . "/../vendor/bin/phpunit");
     }
 
