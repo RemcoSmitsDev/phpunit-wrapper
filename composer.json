@@ -12,6 +12,9 @@
     "nunomaduro/collision": "^5.11.0",
     "phpunit/phpunit": "^9.5"
   },
+  "bin": [
+    "bin/phpUnitWrapper"
+  ],
   "license": "MIT",
   "autoload": {
     "psr-4": {
