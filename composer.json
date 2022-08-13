@@ -2,6 +2,7 @@
   "name": "remcosmits/phpunit-wrapper",
   "description": "PHPUnit wrapper with formatter to help for better debugging and nicer display.",
   "type": "library",
+  "minimum-stability": "stable",
   "scripts": {
     "post-install-cmd": [
       "@php bin/phpUnitWrapper.php setup"
