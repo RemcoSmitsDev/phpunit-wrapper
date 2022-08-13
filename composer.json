@@ -8,8 +8,8 @@
     ]
   },
   "require": {
-    "symfony/console": "^6.0.2",
-    "nunomaduro/collision": "^6.2",
+    "symfony/console": "^5.0",
+    "nunomaduro/collision": "^5.11.0",
     "phpunit/phpunit": "^9.5"
   },
   "license": "MIT",
