@@ -53,7 +53,7 @@ final class PhpUnitWrapper
             shell_exec('cd ' . $dir . ' && composer install');
         }
 
-        return realpath(__DIR__ . "/../vendor/bin/phpunit");
+        return realpath($dir . "/vendor/bin/phpunit");
     }
 
     /**
