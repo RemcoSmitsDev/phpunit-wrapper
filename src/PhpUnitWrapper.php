@@ -38,7 +38,7 @@ final class PhpUnitWrapper
      */
     private static function getCommandCalledFromDirectory(): string
     {
-        return exec('pwd');
+        return dirname((string)exec('pwd'));
     }
 
     /**
