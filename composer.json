@@ -1,0 +1,27 @@
+{
+  "name": "remcosmits/phpunit-wrapper",
+  "description": "PHPUnit wrapper with formatter to help for better debugging and nicer display.",
+  "type": "library",
+  "scripts": {
+    "post-install-cmd": [
+      "@php bin/phpUnitWrapper.php setup"
+    ]
+  },
+  "require": {
+    "symfony/console": "^6.1",
+    "nunomaduro/collision": "^6.2",
+    "phpunit/phpunit": "^9.5"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Remcosmits\\PhpunitWrapper\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Remco Smits",
+      "email": "djsmits12@gmail.com"
+    }
+  ]
+}
