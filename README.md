@@ -3,7 +3,8 @@
 <p align="center">PHPUnit Collision Cross Project Wrapper</p>
 
 <p align="center">
-    <img alt="Preview" src="/images/example.png">
+    <img alt="Preview" src="/images/example1.png">
+    <img alt="Preview" src="/images/example2.png">
 	<p align="center">
 		<a href="//packagist.org/packages/remcosmtis/phpunit-wrapper"><img alt="Latest Stable Version" src="https://poser.pugx.org/remcosmits/phpunit-wrapper/v"></a>
 		<a href="//packagist.org/packages/remcosmits/phpunit-wrapper"><img alt="License" src="https://poser.pugx.org/remcosmits/phpunit-wrapper/license"></a>
