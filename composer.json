@@ -8,7 +8,7 @@
     ]
   },
   "require": {
-    "symfony/console": "6.0.7",
+    "symfony/console": "^6.0.2",
     "nunomaduro/collision": "^6.2",
     "phpunit/phpunit": "^9.5"
   },
