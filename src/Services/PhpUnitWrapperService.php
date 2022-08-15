@@ -56,7 +56,7 @@ final class PhpUnitWrapperService
      */
     private static function getPhpUnitRelativePath()
     {
-        $path = realpath($GLOBALS['_composer_bin_dir'] ?? dirname(__DIR__) . '/../');
+        $path = realpath(dirname(__DIR__) . '/../');
 
         // check if vendor dir exists
         if (!file_exists($path . '/vendor/bin/phpunit')) {
