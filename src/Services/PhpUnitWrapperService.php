@@ -46,7 +46,11 @@ final class PhpUnitWrapperService
      */
     private static function getPhpUnitRelativePath()
     {
-        $dir = realpath(dirname(__DIR__) . '/../');
+        $dir = dirname(__DIR__);
+
+        if (!is_file(sprintf('%s/vendor/autoload.php', $dir))) {
+            $dir = dirname(__DIR__, 2);
+        }
 
         // check if vendor dir exists
         if (!file_exists($dir . '/vendor/bin/phpunit')) {
