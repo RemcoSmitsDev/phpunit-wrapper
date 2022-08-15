@@ -24,6 +24,21 @@ class PHPUnitWrapperRegisterCommand extends Command
     protected static $defaultDescription = 'Register the PHPUnit formatter wrapper!';
 
     /**
+     * @var string
+     */
+    private string $relativePath;
+
+    /**
+     * @param string $relativePath
+     */
+    public function __construct(string $relativePath)
+    {
+        parent::__construct(null);
+
+        $this->relativePath = $relativePath;
+    }
+
+    /**
      * Execute the command
      *
      * @param InputInterface $input
@@ -33,7 +48,7 @@ class PHPUnitWrapperRegisterCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            PhpUnitWrapperService::register();
+            PhpUnitWrapperService::register($this->relativePath);
 
             return Command::SUCCESS;
         } catch (\Throwable $th) {

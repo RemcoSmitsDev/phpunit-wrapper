@@ -7,6 +7,11 @@ final class PhpUnitWrapperService
     private const PRINTER_CLASS = 'NunoMaduro\\Collision\\Adapters\\Phpunit\\Printer';
 
     /**
+     * @var string
+     */
+    private static string $relativePath;
+
+    /**
      * @var string[]
      */
     private static array $params = [
@@ -16,10 +21,13 @@ final class PhpUnitWrapperService
     ];
 
     /**
+     * @param string $relativePath
      * @return void
      */
-    public static function register(): void
+    public static function register(string $relativePath): void
     {
+        self::$relativePath = $relativePath;
+
         self::addConfigurationFileParam();
 
         echo self::wrapPhpUnitWithFormatter();
@@ -46,18 +54,12 @@ final class PhpUnitWrapperService
      */
     private static function getPhpUnitRelativePath()
     {
-        $dir = dirname(__DIR__);
-
-        if (!is_file(sprintf('%s/vendor/autoload.php', $dir))) {
-            $dir = dirname(__DIR__, 2);
-        }
-
         // check if vendor dir exists
-        if (!file_exists($dir . '/vendor/bin/phpunit')) {
-            shell_exec('cd ' . $dir . ' && composer install');
+        if (!file_exists(self::$relativePath . '/vendor/bin/phpunit')) {
+            shell_exec('cd ' . self::$relativePath . ' && composer install');
         }
 
-        return realpath($dir . "/vendor/bin/phpunit");
+        return realpath(self::$relativePath . "/vendor/bin/phpunit");
     }
 
     /**

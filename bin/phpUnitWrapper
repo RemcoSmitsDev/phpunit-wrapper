@@ -15,7 +15,7 @@ require sprintf('%s/vendor/autoload.php', $root);
 
 $application = new Application();
 
-$defaultCommand = new PHPUnitWrapperRegisterCommand();
+$defaultCommand = new PHPUnitWrapperRegisterCommand($root);
 
 // add commands
 $application->add(new SetupCommand());
