@@ -7,11 +7,6 @@ final class PhpUnitWrapperService
     private const PRINTER_CLASS = 'NunoMaduro\\Collision\\Adapters\\Phpunit\\Printer';
 
     /**
-     * @var string
-     */
-    private static string $relativePath;
-
-    /**
      * @var string[]
      */
     private static array $params = [
@@ -21,13 +16,10 @@ final class PhpUnitWrapperService
     ];
 
     /**
-     * @param string $relativePath
      * @return void
      */
-    public static function register(string $relativePath): void
+    public static function register(): void
     {
-        self::$relativePath = $relativePath;
-
         self::addConfigurationFileParam();
 
         echo self::wrapPhpUnitWithFormatter();
@@ -46,7 +38,17 @@ final class PhpUnitWrapperService
      */
     private static function getCommandCalledFromDirectory(): string
     {
-        return dirname((string)exec('pwd'));
+        $fromPath = exec('pwd');
+
+        if (!$fromPath) {
+            return (string)realpath(dirname(__DIR__) . '/../');
+        }
+
+        if (strpos($fromPath, '/src') === false) {
+            return $fromPath;
+        }
+
+        return dirname($fromPath);
     }
 
     /**
@@ -54,12 +56,14 @@ final class PhpUnitWrapperService
      */
     private static function getPhpUnitRelativePath()
     {
+        $path = realpath($GLOBALS['_composer_bin_dir'] ?? dirname(__DIR__) . '/../');
+
         // check if vendor dir exists
-        if (!file_exists(self::$relativePath . '/vendor/bin/phpunit')) {
-            shell_exec('cd ' . self::$relativePath . ' && composer install');
+        if (!file_exists($path . '/vendor/bin/phpunit')) {
+            shell_exec('cd ' . $path . ' && composer install');
         }
 
-        return realpath(self::$relativePath . "/vendor/bin/phpunit");
+        return realpath($path . "/vendor/bin/phpunit");
     }
 
     /**
