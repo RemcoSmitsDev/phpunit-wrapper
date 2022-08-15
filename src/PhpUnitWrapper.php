@@ -42,9 +42,9 @@ final class PhpUnitWrapper
     }
 
     /**
-     * @return string
+     * @return string|false
      */
-    private static function getPhpUnitRelativePath(): string
+    private static function getPhpUnitRelativePath()
     {
         $dir = dirname(__DIR__);
 
@@ -57,9 +57,9 @@ final class PhpUnitWrapper
     }
 
     /**
-     * @return string
+     * @return string|null|false
      */
-    private static function wrapPhpUnitWithFormatter(): string
+    private static function wrapPhpUnitWithFormatter()
     {
         return shell_exec(
             self::getPhpUnitRelativePath() . " " . implode(' ', self::$params)

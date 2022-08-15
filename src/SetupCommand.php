@@ -48,10 +48,23 @@ class SetupCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
 
-        $answer = (string)$io->ask(
+        $answer = $io->ask(
             $this->reAsk ? 'Retry to add your command!' : 'Specify the command that you want to use as replacement for `composer run phpunit`',
             't'
         );
+
+        if (!is_string($answer)) {
+            $io->error('Your command must be a typeof string!');
+
+            return $this->execute($input, $output);
+        }
+
+        // validate command characters
+        if (!preg_match('/^\w+[0-9]*$/', $answer)) {
+            $io->error('Your command can only contain `A-z_0-9`!');
+
+            return $this->execute($input, $output);
+        }
 
         // check if command contains spaces
         if (strpos($answer, ' ') !== false) {
