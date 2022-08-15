@@ -1,8 +1,8 @@
 <?php
 
-namespace Remcosmits\PhpunitWrapper;
+namespace Remcosmits\PhpunitWrapper\Services;
 
-final class PhpUnitWrapper
+final class PhpUnitWrapperService
 {
     private const PRINTER_CLASS = 'NunoMaduro\\Collision\\Adapters\\Phpunit\\Printer';
 
@@ -46,7 +46,7 @@ final class PhpUnitWrapper
      */
     private static function getPhpUnitRelativePath()
     {
-        $dir = dirname(__DIR__);
+        $dir = realpath(dirname(__DIR__) . '/../');
 
         // check if vendor dir exists
         if (!file_exists($dir . '/vendor/bin/phpunit')) {

@@ -9,8 +9,8 @@ if (!is_file(sprintf('%s/vendor/autoload.php', $root))) {
 
 require sprintf('%s/vendor/autoload.php', $root);
 
-use Remcosmits\PhpunitWrapper\PHPUnitWrapperRegisterCommand;
-use Remcosmits\PhpunitWrapper\SetupCommand;
+use Remcosmits\PhpunitWrapper\Commands\PHPUnitWrapperRegisterCommand;
+use Remcosmits\PhpunitWrapper\Commands\SetupCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();

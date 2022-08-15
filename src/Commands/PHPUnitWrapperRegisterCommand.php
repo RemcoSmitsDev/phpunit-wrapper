@@ -1,23 +1,23 @@
 <?php
 
-namespace Remcosmits\PhpunitWrapper;
+namespace Remcosmits\PhpunitWrapper\Commands;
 
+use Remcosmits\PhpunitWrapper\Services\PhpUnitWrapperService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PHPUnitWrapperRegisterCommand extends Command
 {
     /**
-     * The name of the command (the part after "bin/demo").
+     * The name of the command (the part after "bin/phpUnitWrapper").
      *
      * @var string
      */
     protected static $defaultName = 'PHPUnitWrapperRegisterCommand';
 
     /**
-     * The command description shown when running "php bin/demo list".
+     * The command description shown when running "php bin/phpUnitWrapper list".
      *
      * @var string
      */
@@ -33,7 +33,7 @@ class PHPUnitWrapperRegisterCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            PhpUnitWrapper::register();
+            PhpUnitWrapperService::register();
 
             return Command::SUCCESS;
         } catch (\Throwable $th) {

@@ -1,7 +1,8 @@
 <?php
 
-namespace Remcosmits\PhpunitWrapper;
+namespace Remcosmits\PhpunitWrapper\Commands;
 
+use Remcosmits\PhpunitWrapper\Exceptions\Commands\TerminalProfilePathNotFound;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,14 +17,14 @@ class SetupCommand extends Command
     private bool $reAsk = false;
 
     /**
-     * The name of the command (the part after "bin/demo").
+     * The name of the command (the part after "bin/phpUnitWrapper").
      *
      * @var string
      */
     protected static $defaultName = 'setup';
 
     /**
-     * The command description shown when running "php bin/demo list".
+     * The command description shown when running "php bin/phpUnitWrapper list".
      *
      * @var string
      */
@@ -76,10 +77,9 @@ class SetupCommand extends Command
         }
 
         // get config file
-        $terminalConfigFile = $this->getTerminalProfileFilePath();
-
-        // when there was no config file found
-        if ($terminalConfigFile === false) {
+        try {
+            $terminalConfigFile = $this->getTerminalProfileFilePath();
+        } catch (TerminalProfilePathNotFound $exception) {
             $io->block([
                 "😕 We couldn't found a valid terminal profile config file!",
                 "If you still want to make this work you can add the following alias to your terminal config `alias {$answer}='~/.composer/vendor/bin/phpUnitWrapper`"
@@ -100,22 +100,19 @@ class SetupCommand extends Command
     }
 
     /**
-     * @return string|false
+     * @return string
+     * @throws TerminalProfilePathNotFound
      */
-    private function getTerminalProfileFilePath()
+    private function getTerminalProfileFilePath(): string
     {
-        try {
-            switch (rtrim((string)shell_exec('echo $SHELL'))) {
-                case '/bin/zsh':
-                    return '~/.zshrc';
-                case '/bin/bash':
-                    return '~/.bashrc';
+        switch (rtrim((string)shell_exec('echo $SHELL'))) {
+            case '/bin/zsh':
+                return '~/.zshrc';
+            case '/bin/bash':
+                return '~/.bashrc';
 
-                default:
-                    return false;
-            }
-        } catch (\Throwable $th) {
-            return false;
+            default:
+                throw new TerminalProfilePathNotFound();
         }
     }
 }
