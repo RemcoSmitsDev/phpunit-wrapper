@@ -16,11 +16,16 @@ final class PhpUnitWrapperService
     ];
 
     /**
+     * @param array<string, string|null> $options
      * @return void
      */
-    public static function register(): void
+    public static function register(array $options): void
     {
         self::addConfigurationFileParam();
+
+        foreach (array_filter($options, fn($option) => $option) as $key => $value) {
+            self::$params[] = "--{$key}='{$value}'";
+        }
 
         echo self::wrapPhpUnitWithFormatter();
     }

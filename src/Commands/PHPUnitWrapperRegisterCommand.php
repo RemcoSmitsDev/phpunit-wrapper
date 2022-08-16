@@ -5,7 +5,9 @@ namespace Remcosmits\PhpunitWrapper\Commands;
 use Remcosmits\PhpunitWrapper\Services\PhpUnitWrapperService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 class PHPUnitWrapperRegisterCommand extends Command
 {
@@ -24,6 +26,16 @@ class PHPUnitWrapperRegisterCommand extends Command
     protected static $defaultDescription = 'Register the PHPUnit formatter wrapper!';
 
     /**
+     * @return void
+     */
+    protected function configure(): void
+    {
+        $this
+            ->addOption('suite', 's', InputOption::VALUE_REQUIRED, 'Select the test suite that you want to run')
+            ->addOption('filter', 'f', InputOption::VALUE_REQUIRED, 'Filter tests based on regex');
+    }
+
+    /**
      * Execute the command
      *
      * @param InputInterface $input
@@ -33,10 +45,13 @@ class PHPUnitWrapperRegisterCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            PhpUnitWrapperService::register();
+            PhpUnitWrapperService::register([
+                'testsuite' => $input->getOption('suite'),
+                'filter' => $input->getOption('filter')
+            ]);
 
             return Command::SUCCESS;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return Command::FAILURE;
         }
     }
