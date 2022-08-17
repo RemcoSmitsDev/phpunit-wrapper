@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
 class PHPUnitWrapperRegisterCommand extends Command
@@ -45,7 +46,9 @@ class PHPUnitWrapperRegisterCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            PhpUnitWrapperService::register([
+            $io = new SymfonyStyle($input, $output);
+
+            PhpUnitWrapperService::register($io, [
                 'testsuite' => $input->getOption('suite'),
                 'filter' => $input->getOption('filter')
             ]);

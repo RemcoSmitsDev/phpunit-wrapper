@@ -61,7 +61,7 @@ class SetupCommand extends Command
         }
 
         // validate command characters
-        if (!preg_match('/^\w+[0-9]*$/', $answer)) {
+        if (!preg_match('/^[a-zA-Z_]+\d*$/', $answer)) {
             $io->error('Your command can only contain `A-z_0-9`!');
 
             return $this->execute($input, $output);

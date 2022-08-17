@@ -2,9 +2,16 @@
 
 namespace Remcosmits\PhpunitWrapper\Services;
 
+use Symfony\Component\Console\Style\SymfonyStyle;
+
 final class PhpUnitWrapperService
 {
     private const PRINTER_CLASS = 'NunoMaduro\\Collision\\Adapters\\Phpunit\\Printer';
+
+    /**
+     * @var SymfonyStyle
+     */
+    private static SymfonyStyle $io;
 
     /**
      * @var string[]
@@ -16,14 +23,18 @@ final class PhpUnitWrapperService
     ];
 
     /**
+     * @param SymfonyStyle $io
      * @param array<string, string|null> $options
+     *
      * @return void
      */
-    public static function register(array $options): void
+    public static function register(SymfonyStyle $io, array $options): void
     {
+        self::$io = $io;
+
         self::addConfigurationFileParam();
 
-        foreach (array_filter($options, fn($option) => $option) as $key => $value) {
+        foreach (array_filter($options, static fn($option) => $option) as $key => $value) {
             self::$params[] = "--{$key}='{$value}'";
         }
 
@@ -35,7 +46,24 @@ final class PhpUnitWrapperService
      */
     private static function addConfigurationFileParam(): void
     {
-        self::$params[] = "--configuration='" . self::getCommandCalledFromDirectory() . "/phpunit.xml.dist'";
+        $configurationFilePath = self::getCommandCalledFromDirectory() . '/phpunit.xml.dist';
+
+        // check if configuration file exists
+        if (file_exists($configurationFilePath)) {
+            self::$params[] = "--configuration='{$configurationFilePath}'";
+        } else {
+            self::$io->error('There was no phpunit configuration file found!');
+
+            $answer = self::$io->ask('Enter the folder name/path where your tests live');
+
+            if (!is_string($answer) || trim($answer) === '') {
+                self::addConfigurationFileParam();
+
+                return;
+            }
+
+            self::$params[] = $answer;
+        }
     }
 
     /**
@@ -46,7 +74,7 @@ final class PhpUnitWrapperService
         $fromPath = exec('pwd');
 
         if (!$fromPath) {
-            return (string)realpath(dirname(__DIR__) . '/../');
+            return dirname(__DIR__) . '/../';
         }
 
         if (strpos($fromPath, '/src') === false) {
@@ -61,7 +89,7 @@ final class PhpUnitWrapperService
      */
     private static function getPhpUnitRelativePath()
     {
-        $path = realpath(dirname(__DIR__) . '/../');
+        $path = dirname(__DIR__) . '/../';
 
         // check if vendor dir exists
         if (!file_exists($path . '/vendor/bin/phpunit')) {
