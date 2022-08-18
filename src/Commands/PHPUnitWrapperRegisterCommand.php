@@ -34,7 +34,7 @@ class PHPUnitWrapperRegisterCommand extends Command
         $this
             ->addOption('suite', 's', InputOption::VALUE_REQUIRED, 'Select the test suite that you want to run')
             ->addOption('filter', 'f', InputOption::VALUE_REQUIRED, 'Filter tests based on regex')
-            ->addOption('coverage', 'c', InputOption::VALUE_REQUIRED, 'Run codecoverage');
+            ->addOption('coverage', 'c', InputOption::VALUE_OPTIONAL, 'Run codecoverage');
     }
 
     /**
@@ -52,7 +52,7 @@ class PHPUnitWrapperRegisterCommand extends Command
             PhpUnitWrapperService::register($io, [
                 'testsuite' => $input->getOption('suite'),
                 'filter' => $input->getOption('filter'),
-                'coverage-html' => $input->getOption('coverage') ? 'coverage-report' : null,
+                'coverage-html' => $input->getOption('coverage') ? ($input->getOption('coverage') ?? 'coverage-report') : null,
             ]);
 
             return Command::SUCCESS;
