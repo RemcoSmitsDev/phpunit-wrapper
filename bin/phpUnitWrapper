@@ -4,9 +4,6 @@
 use Remcosmits\PhpunitWrapper\Commands\PHPUnitWrapperRegisterCommand;
 use Remcosmits\PhpunitWrapper\Commands\SetupCommand;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputOption;
 
 $root = dirname(__DIR__);
 
