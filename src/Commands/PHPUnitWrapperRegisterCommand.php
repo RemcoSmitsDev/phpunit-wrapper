@@ -17,7 +17,7 @@ class PHPUnitWrapperRegisterCommand extends Command
      *
      * @var string
      */
-    protected static $defaultName = 'PHPUnitWrapperRegisterCommand';
+    protected static $defaultName = 'phpUnitWrapper';
 
     /**
      * The command description shown when running "php bin/phpUnitWrapper list".
@@ -27,14 +27,39 @@ class PHPUnitWrapperRegisterCommand extends Command
     protected static $defaultDescription = 'Register the PHPUnit formatter wrapper!';
 
     /**
+     * @var array<int, string>
+     */
+    private array $params;
+
+    /**
      * @return void
      */
     protected function configure(): void
     {
-        $this
-            ->addOption('suite', 's', InputOption::VALUE_REQUIRED, 'Select the test suite that you want to run')
-            ->addOption('filter', 'f', InputOption::VALUE_REQUIRED, 'Filter tests based on regex')
-            ->addOption('coverage', 'c', InputOption::VALUE_OPTIONAL, 'Run codecoverage');
+        $validParams = [
+            '--help',
+            '-h',
+            '-h-phpunit',
+            '--help-phpunit',
+            'setup'
+        ];
+
+        $normalArgs = array_filter($_SERVER['argv'], static function ($value) use ($validParams) {
+            return in_array($value, $validParams, true);
+        });
+
+        $paramsToSearchIn = array_slice($_SERVER['argv'], 1, count($_SERVER['argv']));
+
+        $this->params = array_filter($paramsToSearchIn, static function ($value) use ($validParams) {
+            return !in_array($value, $validParams, true);
+        });
+
+        $_SERVER['argv'] = [
+            $_SERVER['argv'][0],
+            ...$normalArgs,
+        ];
+
+        $this->addOption('help-phpunit', 'h-phpunit', InputOption::VALUE_NONE, 'Show help instructions from phpunit.');
     }
 
     /**
@@ -49,11 +74,11 @@ class PHPUnitWrapperRegisterCommand extends Command
         try {
             $io = new SymfonyStyle($input, $output);
 
-            PhpUnitWrapperService::register($io, [
-                'testsuite' => $input->getOption('suite'),
-                'filter' => $input->getOption('filter'),
-                'coverage-html' => $input->getOption('coverage') ? ($input->getOption('coverage') ?? 'coverage-report') : null,
-            ]);
+            if ($input->getOption('help-phpunit')) {
+                $this->params[] = '--help';
+            }
+
+            PhpUnitWrapperService::register($io, $this->params);
 
             return Command::SUCCESS;
         } catch (Throwable $th) {

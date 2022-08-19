@@ -24,19 +24,19 @@ final class PhpUnitWrapperService
 
     /**
      * @param SymfonyStyle $io
-     * @param array<string, string|null> $options
-     *
+     * @param array<int, string> $params
      * @return void
      */
-    public static function register(SymfonyStyle $io, array $options): void
+    public static function register(SymfonyStyle $io, array $params): void
     {
         self::$io = $io;
 
         self::addConfigurationFileParam();
 
-        foreach (array_filter($options, static fn($option) => $option) as $key => $value) {
-            self::$params[] = "--{$key}='{$value}'";
-        }
+        self::$params = [
+            ...self::$params,
+            ...$params
+        ];
 
         echo self::wrapPhpUnitWithFormatter();
     }
@@ -54,16 +54,30 @@ final class PhpUnitWrapperService
         } else {
             self::$io->error('There was no phpunit configuration file found!');
 
-            $answer = self::$io->ask('Enter the folder name/path where your tests live');
-
-            if (!is_string($answer) || trim($answer) === '') {
-                self::addConfigurationFileParam();
-
-                return;
-            }
-
-            self::$params[] = $answer;
+            self::$params = [
+                self::askForTestsFolderPath(),
+                ...self::$params
+            ];
         }
+    }
+
+    /**
+     * @return string
+     */
+    private static function askForTestsFolderPath(): string
+    {
+        $answer = self::$io->ask('Enter the folder name/path where your tests live');
+
+        if (!is_string($answer) ||
+            trim($answer) === '' ||
+            !file_exists(self::getCommandCalledFromDirectory() . '/' . trim($answer))
+        ) {
+            self::$io->error('Invalid tests folder [' . $answer . ']!');
+
+            return self::askForTestsFolderPath();
+        }
+
+        return $answer;
     }
 
     /**

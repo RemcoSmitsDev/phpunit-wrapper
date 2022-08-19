@@ -4,6 +4,9 @@
 use Remcosmits\PhpunitWrapper\Commands\PHPUnitWrapperRegisterCommand;
 use Remcosmits\PhpunitWrapper\Commands\SetupCommand;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputOption;
 
 $root = dirname(__DIR__);
 
@@ -14,6 +17,11 @@ if (!is_file(sprintf('%s/vendor/autoload.php', $root))) {
 require sprintf('%s/vendor/autoload.php', $root);
 
 $application = new Application();
+
+//$application->setDefinition(new InputDefinition([
+//    new InputArgument('setup', InputArgument::OPTIONAL),
+//    new InputOption('do', null, InputOption::VALUE_NONE),
+//]));
 
 $defaultCommand = new PHPUnitWrapperRegisterCommand();
 
