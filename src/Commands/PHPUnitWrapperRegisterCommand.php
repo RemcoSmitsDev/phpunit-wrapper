@@ -72,13 +72,14 @@ class PHPUnitWrapperRegisterCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $io = new SymfonyStyle($input, $output);
-
             if ($input->getOption('help-phpunit')) {
                 $this->params[] = '--help';
             }
 
-            PhpUnitWrapperService::register($io, $this->params);
+            PhpUnitWrapperService::register(
+                new SymfonyStyle($input, $output),
+                $this->params
+            );
 
             return Command::SUCCESS;
         } catch (Throwable $th) {
