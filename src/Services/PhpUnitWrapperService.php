@@ -2,11 +2,15 @@
 
 namespace Remcosmits\PhpunitWrapper\Services;
 
+use Remcosmits\PhpunitWrapper\Exceptions\Services\InvalidInstallationException;
+use Remcosmits\PhpunitWrapper\Exceptions\Services\InvalidPhpUnitRelativePathException;
+use Remcosmits\PhpunitWrapper\Exceptions\Services\InvalidTerminalResponseException;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use NunoMaduro\Collision\Adapters\Phpunit\Printer;
 
 final class PhpUnitWrapperService
 {
-    private const PRINTER_CLASS = 'NunoMaduro\\Collision\\Adapters\\Phpunit\\Printer';
+    private const PRINTER_CLASS = Printer::class;
 
     /**
      * @var SymfonyStyle
@@ -24,8 +28,12 @@ final class PhpUnitWrapperService
 
     /**
      * @param SymfonyStyle $io
-     * @param array<int, string> $params
+     * @param string[] $params
      * @return void
+     *
+     * @throws InvalidInstallationException
+     * @throws InvalidPhpUnitRelativePathException
+     * @throws InvalidTerminalResponseException
      */
     public static function register(SymfonyStyle $io, array $params): void
     {
@@ -100,23 +108,26 @@ final class PhpUnitWrapperService
     }
 
     /**
-     * @return string|false
+     * @return string
+     *
+     * @throws InvalidInstallationException
+     * @throws InvalidPhpUnitRelativePathException
      */
-    private static function getPhpUnitRelativePath()
+    private static function getPhpUnitRelativePath(): string
     {
         $relativePath = realpath(
             dirname(__DIR__) . DIRECTORY_SEPARATOR . '..'
         );
 
+        if ($relativePath === false) {
+            throw new InvalidPhpUnitRelativePathException();
+        }
+
         $phpUnitPath = $relativePath . '/vendor/bin/phpunit';
 
         // check if composer.json file exists
         if (!file_exists($relativePath . DIRECTORY_SEPARATOR . 'composer.json') && !file_exists($phpUnitPath)) {
-            self::$io->error(
-                'There was no `composer.json` file and `vendor` folder found! Make sure the package is installed correctly!'
-            );
-
-            return false;
+            throw new InvalidInstallationException();
         }
 
         // check if vendor dir exists
@@ -128,18 +139,22 @@ final class PhpUnitWrapperService
     }
 
     /**
-     * @return string|null|false
+     * @return string
+     *
+     * @throws InvalidInstallationException
+     * @throws InvalidTerminalResponseException
+     * @throws InvalidPhpUnitRelativePathException
      */
-    private static function wrapPhpUnitWithFormatter()
+    private static function wrapPhpUnitWithFormatter(): string
     {
-        $phpUnitPath = self::getPhpUnitRelativePath();
+        $response = shell_exec(
+            self::getPhpUnitRelativePath() . " " . implode(' ', self::$params)
+        );
 
-        if ($phpUnitPath === false) {
-            return false;
+        if ($response === null || $response === false) {
+            throw new InvalidTerminalResponseException();
         }
 
-        return shell_exec(
-            $phpUnitPath . " " . implode(' ', self::$params)
-        );
+        return $response;
     }
 }

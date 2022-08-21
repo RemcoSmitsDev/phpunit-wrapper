@@ -101,6 +101,7 @@ class SetupCommand extends Command
 
     /**
      * @return string
+     *
      * @throws TerminalProfilePathNotFound
      */
     private function getTerminalProfileFilePath(): string
