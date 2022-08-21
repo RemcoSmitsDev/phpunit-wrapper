@@ -2,6 +2,7 @@
 
 namespace Remcosmits\PhpunitWrapper\Services;
 
+use RuntimeException;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class PhpUnitWrapperService
@@ -103,14 +104,27 @@ final class PhpUnitWrapperService
      */
     private static function getPhpUnitRelativePath()
     {
-        $path = dirname(__DIR__) . '/../';
+        $relativePath = realpath(
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . '..'
+        );
 
-        // check if vendor dir exists
-        if (!file_exists($path . '/vendor/bin/phpunit')) {
-            shell_exec('cd ' . $path . ' && composer install');
+        $phpUnitPath = $relativePath . '/vendor/bin/phpunit';
+
+        // check if composer.json file exists
+        if (!file_exists($relativePath . DIRECTORY_SEPARATOR . 'composer.json') && !file_exists($phpUnitPath)) {
+            self::$io->error(
+                'There was no `composer.json` file and `vendor` folder found! Make sure the package is installed correctly!'
+            );
+
+            return false;
         }
 
-        return realpath($path . "/vendor/bin/phpunit");
+        // check if vendor dir exists
+        if (!file_exists($phpUnitPath)) {
+            shell_exec('cd ' . $relativePath . ' && composer install >/dev/null 2>&1');
+        }
+
+        return rtrim($phpUnitPath, DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -118,6 +132,12 @@ final class PhpUnitWrapperService
      */
     private static function wrapPhpUnitWithFormatter()
     {
+        $phpUnitPath = self::getPhpUnitRelativePath();
+
+        if ($phpUnitPath === false) {
+            return false;
+        }
+
         return shell_exec(
             self::getPhpUnitRelativePath() . " " . implode(' ', self::$params)
         );
