@@ -82,7 +82,7 @@ class SetupCommand extends Command
         } catch (TerminalProfilePathNotFound $exception) {
             $io->block([
                 "😕 We couldn't found a valid terminal profile config file!",
-                "If you still want to make this work you can add the following alias to your terminal config `alias {$answer}='~/.composer/vendor/bin/phpUnitWrapper`"
+                "If you still want to make this work you can add the following alias to your terminal config `alias {$answer}='phpUnitWrapper`",
             ], null, 'fg=white;bg=red', '  ', true);
 
             return Command::FAILURE;
@@ -91,7 +91,7 @@ class SetupCommand extends Command
         $io->block([
             "Follow these steps: ",
             "• Run the following command `nano {$terminalConfigFile}`",
-            "• Add the following code `alias {$answer}='~/.composer/vendor/bin/phpUnitWrapper'`",
+            "• Add the following code `alias {$answer}='phpUnitWrapper'`",
             "• Run the following command `source {$terminalConfigFile}`",
             "🎉 You can now use `{$answer}` as command to run your tests in all your projects!"
         ], null, 'success', '  ', true);
