@@ -2,7 +2,6 @@
 
 namespace Remcosmits\PhpunitWrapper\Services;
 
-use RuntimeException;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class PhpUnitWrapperService
@@ -69,7 +68,8 @@ final class PhpUnitWrapperService
     {
         $answer = self::$io->ask('Enter the folder name/path where your tests live');
 
-        if (!is_string($answer) ||
+        if (
+            !is_string($answer) ||
             trim($answer) === '' ||
             !file_exists(self::getCommandCalledFromDirectory() . '/' . trim($answer))
         ) {
