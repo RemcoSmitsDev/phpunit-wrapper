@@ -21,9 +21,6 @@ composer global require remcosmits/phpunit-wrapper
 
 Make sure the `~/.composer/vendor/bin` directory is in your system's `PATH`.
 
-<details>
-<summary>Show me how</summary>
-
 If it's not already there, add the following line to your Bash configuration file (usually `~/.bash_profile`
 , `~/.bashrc`, `~/.zshrc`, etc.):
 
@@ -36,8 +33,6 @@ Run the following command on the file you've just updated for the change to take
 ```
 source ~/.zshrc
 ```
-
-</details>
 
 ## Setup
 
