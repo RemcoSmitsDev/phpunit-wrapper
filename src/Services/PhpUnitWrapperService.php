@@ -139,7 +139,7 @@ final class PhpUnitWrapperService
         }
 
         return shell_exec(
-            self::getPhpUnitRelativePath() . " " . implode(' ', self::$params)
+            $phpUnitPath . " " . implode(' ', self::$params)
         );
     }
 }
