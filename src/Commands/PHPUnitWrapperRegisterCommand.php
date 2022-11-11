@@ -37,10 +37,6 @@ class PHPUnitWrapperRegisterCommand extends Command
     protected function configure(): void
     {
         $validParams = [
-            '--help',
-            '-h',
-            '-h-phpunit',
-            '--help-phpunit',
             'setup'
         ];
 
@@ -58,8 +54,6 @@ class PHPUnitWrapperRegisterCommand extends Command
             $_SERVER['argv'][0],
             ...$normalArgs,
         ];
-
-        $this->addOption('help-phpunit', 'h-phpunit', InputOption::VALUE_NONE, 'Show help instructions from phpunit.');
     }
 
     /**
@@ -74,12 +68,7 @@ class PHPUnitWrapperRegisterCommand extends Command
         $styleOutput = new SymfonyStyle($input, $output);
 
         try {
-            if ($input->getOption('help-phpunit')) {
-                $this->params[] = '--help';
-            }
-
             PhpUnitWrapperService::register(
-                $styleOutput,
                 $this->params
             );
 

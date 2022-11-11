@@ -6,8 +6,6 @@ use Exception;
 
 class InvalidTerminalResponseException extends Exception
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $message = 'There was an invalid terminal response!';
 }

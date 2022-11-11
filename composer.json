@@ -14,7 +14,8 @@
   "require": {
     "symfony/console": "^5.0",
     "nunomaduro/collision": "^5.11.0",
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.5",
+    "ext-json": "*"
   },
   "bin": [
     "bin/phpUnitWrapper"
@@ -33,6 +34,7 @@
   ],
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.7",
-    "phpstan/phpstan": "^1.8"
+    "phpstan/phpstan": "^1.8",
+    "symfony/var-dumper": "^5.4"
   }
 }
