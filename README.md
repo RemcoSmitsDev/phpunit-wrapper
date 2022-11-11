@@ -11,7 +11,7 @@
 	</p>
 </p>
 
-## Instal
+## Install
 
 Install the PHPUnit Collision Wrapper:
 
