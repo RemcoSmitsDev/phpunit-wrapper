@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Remcosmits\PhpunitWrapper\Commands;
 
 use Remcosmits\PhpunitWrapper\Exceptions\Commands\TerminalProfilePathNotFound;
@@ -9,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SetupCommand extends Command
+final class SetupCommand extends Command
 {
     /**
      * @var boolean

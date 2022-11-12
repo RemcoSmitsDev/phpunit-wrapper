@@ -80,7 +80,8 @@ final class PhpUnitWrapperService
         $phpUnitPath = $relativePath . '/vendor/bin/phpunit';
 
         // check if composer.json file exists
-        if (file_exists($relativePath . DIRECTORY_SEPARATOR . 'composer.json') === false &&
+        if (
+            file_exists($relativePath . DIRECTORY_SEPARATOR . 'composer.json') === false &&
             file_exists($phpUnitPath) === false
         ) {
             throw new InvalidInstallationException();
@@ -116,7 +117,9 @@ final class PhpUnitWrapperService
     {
         $packageJson = self::getPackageJson();
 
-        return $packageJson ? $packageJson['scripts'] : [];
+        $scripts = $packageJson['scripts'] ?? [];
+
+        return is_array($scripts) ? $scripts : [];
     }
 
     /** @return array{envs: string, params: string} */

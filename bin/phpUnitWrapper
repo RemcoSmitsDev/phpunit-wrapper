@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 use Remcosmits\PhpunitWrapper\Commands\PHPUnitWrapperRegisterCommand;
 use Remcosmits\PhpunitWrapper\Commands\SetupCommand;
 use Symfony\Component\Console\Application;

@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Remcosmits\PhpunitWrapper\Commands;
 
 use Remcosmits\PhpunitWrapper\Services\PhpUnitWrapperService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
-class PHPUnitWrapperRegisterCommand extends Command
+final class PHPUnitWrapperRegisterCommand extends Command
 {
     /**
      * The name of the command (the part after "bin/phpUnitWrapper").
