@@ -13,32 +13,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class SetupCommand extends Command
 {
-    /**
-     * @var boolean
-     */
     private bool $reAsk = false;
 
-    /**
-     * The name of the command (the part after "bin/phpUnitWrapper").
-     *
-     * @var string
-     */
+    /** @var string */
     protected static $defaultName = 'setup';
 
-    /**
-     * The command description shown when running "php bin/phpUnitWrapper list".
-     *
-     * @var string
-     */
+    /** @var string */
     protected static $defaultDescription = 'SetupCommand PHPUnit wrapper command!';
 
-    /**
-     * Execute the command
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int 0 if everything went fine, or an exit code.
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputStyle = new OutputFormatterStyle('#fff', '#33cc33');
@@ -56,7 +38,7 @@ final class SetupCommand extends Command
             't'
         );
 
-        if (!is_string($answer)) {
+        if (is_string($answer) === false) {
             $io->error('Your command must be a typeof string!');
 
             return $this->execute($input, $output);
@@ -101,11 +83,7 @@ final class SetupCommand extends Command
         return Command::SUCCESS;
     }
 
-    /**
-     * @return string
-     *
-     * @throws TerminalProfilePathNotFound
-     */
+    /** @throws TerminalProfilePathNotFound */
     private function getTerminalProfileFilePath(): string
     {
         switch (rtrim((string)shell_exec('echo $SHELL'))) {
